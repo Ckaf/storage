@@ -4,31 +4,27 @@ import application.entities.DataStorageEntity;
 import application.tools.DatabaseManager;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.*;
+
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-
-@Controller
+@CrossOrigin
+@RestController
 public class MainController {
 
     DatabaseManager databaseManager=new DatabaseManager();
-    @RequestMapping(value="/upload", method=RequestMethod.GET)
+    @RequestMapping(value="/upload", method=RequestMethod.GET, produces="text/plain")
     public @ResponseBody String provideUploadInfo() {
         return "You can upload the file using the same url.";
     }
 
-    @RequestMapping(value="/upload", method=RequestMethod.POST)
-    public @ResponseBody ResponseEntity handleFileUpload(@RequestParam(value = "name") String name,
-                                                 @RequestParam(value = "file") String file){
+    @ResponseBody
+    @RequestMapping(value="/upload", method=RequestMethod.POST, produces="text/plain")
+    public String handleFileUpload(@RequestParam(value = "name") String name,
+                                   @RequestParam(value = "file") String file){
+
         if (!file.isEmpty()) {
             try {
                 String path="storage/"+name + "-uploaded";
@@ -41,12 +37,12 @@ public class MainController {
                 dataStorage.setName(name);
                 dataStorage.setPath(path);
                 save(dataStorage);
-                return ResponseEntity.accepted().body("You have successfully downloaded " + name + " in " + name + "-uploaded !");
+                return "You have successfully downloaded " + name + " in " + name + "-uploaded !";
             } catch (Exception e) {
-                return ResponseEntity.accepted().body("You were unable to download " + name + " => " + e.getMessage());
+                return "You were unable to download " + name + " => " + e.getMessage();
             }
         } else {
-            return ResponseEntity.accepted().body("You were unable to download " + name + " because the file is empty.");
+            return "You were unable to download " + name + " because the file is empty.";
         }
     }
     public void save(DataStorageEntity dataStorageEntity) {

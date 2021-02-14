@@ -20,8 +20,6 @@ export default class App extends React.Component {
     }
     let data=this.fileInput.current.files[0]
     let name=this.fileInput.current.files[0].name
-
-    let newData;
     let reader = new FileReader();
     reader.onload = function(){
       let text = reader.result;
@@ -30,13 +28,12 @@ export default class App extends React.Component {
       let formData = new FormData();
       formData.append('name',name)
       formData.append('file',text.toString())
-      fetch("http://localhost:2020/upload", {
-        mode: 'no-cors',
-        method: "POST",
-        body:formData
-      }).then(function (response){
-        // console.log(response.body)
-      })
+      let xhr = new XMLHttpRequest()
+      xhr.onload = function() {
+        alert(xhr.responseText)
+      }
+      xhr.open('POST', 'http://localhost:2020/upload')
+      xhr.send(formData)
     }
     reader.readAsText(data)
 
