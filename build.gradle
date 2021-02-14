@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+    id 'war'
+    id 'org.springframework.boot' version '2.4.1'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter'
+        implementation'org.springframework.boot:spring-boot-starter-web'
+        implementation'org.springframework.cloud:spring-cloud-starter-openfeign'
+        implementation 'org.hibernate:hibernate-core:5.4.28.Final'
+        // https://mvnrepository.com/artifact/javax.enterprise/cdi-api
+        providedCompile group: 'javax.enterprise', name: 'cdi-api', version: '1.2'
+        // https://mvnrepository.com/artifact/org.postgresql/postgresql
+        compile group: 'org.postgresql', name: 'postgresql', version: '42.1.4'
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign
+        compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '3.0.0'
+        // https://mvnrepository.com/artifact/org.json/json
+        compile group: 'org.json', name: 'json', version: '20090211'
+        implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+        runtime group: 'org.springframework.cloud', name: 'spring-cloud-dependencies', version: '2020.0.0', ext: 'pom'
+    }
+}
+test {
+    useJUnitPlatform()
+}
